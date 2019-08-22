@@ -64,8 +64,8 @@ class Studioforty9_Recaptcha_Helper_Redirect extends Mage_Core_Helper_Abstract
             return $referer;
     	}
 
-    	if ($this->_session->hasLastUrl()) {
-    		return $this->_session->getLastUrl();
+        if ($this->getSession()->hasLastUrl()) {
+            return $this->getSession()->getLastUrl();
     	}
 
     	return $this->getRequestUri();
@@ -105,7 +105,7 @@ class Studioforty9_Recaptcha_Helper_Redirect extends Mage_Core_Helper_Abstract
      */
     protected function getRequestUri()
     {
-    	$visitorData = $this->_session->getData('visitor_data');
+        $visitorData = $this->getSession()->getData('visitor_data');
 
     	return ($this->hasRequestUri($visitorData)) ? $visitorData['request_uri'] : Mage::getBaseUrl();
     }
