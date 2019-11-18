@@ -102,6 +102,9 @@ class Studioforty9_Recaptcha_Block_Explicit extends Mage_Core_Block_Template
      */
     public function getTheme()
     {
+        if ($this->hasData('theme')) {
+            return $this->getData('theme');
+        }
         return $this->_getHelper()->getTheme();
     }
 
