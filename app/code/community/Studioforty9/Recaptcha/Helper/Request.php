@@ -23,7 +23,7 @@ use ReCaptcha\ReCaptcha;
  */
 class Studioforty9_Recaptcha_Helper_Request extends Mage_Core_Helper_Abstract
 {
-    const REQUEST_RESPONSE = 'g-recaptcha-response';
+    public const REQUEST_RESPONSE = 'g-recaptcha-response';
 
     /**
      * Verify the details of the recaptcha request.

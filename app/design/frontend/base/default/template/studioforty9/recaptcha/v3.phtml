@@ -1,0 +1,71 @@
+<?php /** @var Studioforty9_Recaptcha_Block_Explicit $this */?>
+<?php $id = $this->getRecaptchaId(); ?>
+<?php $siteKey = $this->getSiteKey(); ?>
+
+<div class="recaptcha">
+    <input type="hidden" id="el-<?= $id ?>" name="<?= Studioforty9_Recaptcha_Helper_Request::REQUEST_RESPONSE ?>" />
+    <style>.grecaptcha-badge { visibility: hidden; }</style>
+    <p>
+        <?=
+            $this->__(
+                'This site is protected by reCAPTCHA and the Google <a href="%s">Privacy Policy</a> and <a href="%s">Terms of Service</a> apply.',
+                'https://policies.google.com/privacy',
+                'https://policies.google.com/terms'
+            )
+        ?>
+    </p>
+</div>
+
+<script>
+    (function(){
+        var element = document.querySelector('#el-<?= $id ?>');
+        var form = element.form;
+
+        // recaptcha callback for this form
+        window['recaptchaOnloadCallback_<?= $id ?>'] = function() {
+            requestAnimationFrame(function () {
+                Event.observe(form, 'submit', function (e) {
+                    if (e.stopped) {
+                        return;
+                    }
+
+                    e.preventDefault();
+                    grecaptcha.execute('<?= $this->getSiteKey() ?>', {action: 'submit'}).then(function (token) {
+                        element.value = token;
+                        form.submit();
+                    });
+                });
+            });
+        };
+
+        // recaptcha load for this form
+
+        var loadJS = function () {
+            //var script = <?= json_encode($this->getRecaptchaScript($id)) ?>;
+            var script = document.createElement('script');
+            script.type = 'text/javascript';
+            script.src = 'https://www.google.com/recaptcha/api.js?render=<?= $this->getSiteKey() ?>&onload=recaptchaOnloadCallback_<?= $id ?>';
+            script.async = true;
+            document.body.appendChild(script);
+        };
+
+        // detect when form is visible
+
+        if (!('IntersectionObserver' in window) ||
+            !('IntersectionObserverEntry' in window) ||
+            !('intersectionRatio' in window.IntersectionObserverEntry.prototype)) {
+            loadJS();
+        } else {
+            var observer = new IntersectionObserver(function(entries, observer) {
+                entries.forEach(function(entry) {
+                    if (entry.intersectionRatio > 0) {
+                        observer.disconnect();
+                        loadJS();
+                    }
+                });
+            }, { root: null });
+
+            observer.observe(form);
+        }
+    })();
+</script>
