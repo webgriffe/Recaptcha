@@ -26,7 +26,7 @@ class Studioforty9_Recaptcha_Block_Explicit extends Mage_Core_Block_Template
         'ca_ES' => 'ca',
         'zh_CN' => 'zh-CN',
         'zh_HK|zh_TW' => 'zh-TW',
-        'hr_HR' => 'hr', 
+        'hr_HR' => 'hr',
         'cs_CZ' => 'cs',
         'da_DK' => 'da',
         'nl_NL' => 'nl',
@@ -67,6 +67,18 @@ class Studioforty9_Recaptcha_Block_Explicit extends Mage_Core_Block_Template
         'uk_UA' => 'uk',
         'vi_VN' => 'vi'
     );
+
+    /**
+     * @var string
+     */
+    private $recaptchaId;
+
+    protected function _construct()
+    {
+        parent::_construct();
+        $this->recaptchaId = uniqid();
+    }
+
 
     /**
      * Is the block allowed to display.
@@ -132,6 +144,8 @@ class Studioforty9_Recaptcha_Block_Explicit extends Mage_Core_Block_Template
 
     /**
      * Get the reCAPTACHA javascript code.
+     * This is only for reCaptcha V2. The method name does not specify it for BC reasons.
+     * For reCaptcha V3 the getRecaptchaV3ScriptUrl() method should be used.
      *
      * @return string
      */
@@ -141,6 +155,64 @@ class Studioforty9_Recaptcha_Block_Explicit extends Mage_Core_Block_Template
             return '';
         }
 
+        return $this->getRecaptchaScriptV2($id);
+    }
+
+    public function getRecaptchaV3ScriptUrl(): string
+    {
+        $siteKey = $this->getSiteKey();
+        $id = $this->getRecaptchaId();
+
+        $query = [
+            'render' => $siteKey,
+            'onload' => sprintf('recaptchaOnloadCallback_%s', $id)
+        ];
+
+        return sprintf('https://www.google.com/recaptcha/api.js?%s', http_build_query($query));
+    }
+
+    /**
+     * Get a unique ID for the recaptcha block.
+     *
+     * @return string
+     */
+    public function getRecaptchaId()
+    {
+        return $this->recaptchaId;
+    }
+
+    public function getTemplate()
+    {
+        if ($this->_getHelper()->getVersion() === '3') {
+            return 'studioforty9/recaptcha/v3.phtml';
+        }
+
+        return 'studioforty9/recaptcha/explicit.phtml';
+    }
+
+
+    /**
+     * Get the recaptcha helper.
+     *
+     * @return Studioforty9_Recaptcha_Helper_Data
+     */
+    protected function _getHelper()
+    {
+        return Mage::helper('studioforty9_recaptcha');
+    }
+
+    protected function _toHtml()
+    {
+        if (!$this->_getHelper()->isEnabled()) {
+            return '';
+        }
+
+        return parent::_toHtml();
+    }
+
+
+    private function getRecaptchaScriptV2($id): string
+    {
         $language = Mage::app()->getLocale()->getLocale()->toString();
         $lang = 'en';
 
@@ -151,34 +223,14 @@ class Studioforty9_Recaptcha_Block_Explicit extends Mage_Core_Block_Template
         }
 
         $query = array(
-            'onload' => 'onloadCallback'.$id,
+            'onload' => 'onloadCallback' . $id,
             'render' => 'explicit',
-            'hl'     => $lang
+            'hl' => $lang
         );
 
         return sprintf(
             '<script src="https://www.google.com/recaptcha/api.js?%s" async defer></script>',
             http_build_query($query)
         );
-    }
-
-    /**
-     * Get a unique ID for the recaptcha block.
-     *
-     * @return string
-     */
-    public function getRecaptchaId()
-    {
-        return uniqid();
-    }
-
-    /**
-     * Get the recaptcha helper.
-     *
-     * @return Studioforty9_Recaptcha_Helper_Data
-     */
-    protected function _getHelper()
-    {
-        return Mage::helper('studioforty9_recaptcha');
     }
 }

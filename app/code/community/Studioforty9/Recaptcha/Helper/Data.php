@@ -32,6 +32,8 @@ class Studioforty9_Recaptcha_Helper_Data extends Mage_Core_Helper_Abstract
     const MODULE_KEY_SIZE = 'google/recaptcha/size';
     const MODULE_KEY_TYPE = 'google/recaptcha/type';
     const MODULE_KEY_ROUTES = 'google/recaptcha/enabled_routes';
+    const MODULE_VERSION = 'google/recaptcha/version';
+    const MODULE_SCORE_THRESHOLD = 'google/recaptcha/score_threshold';
     /**#@-*/
 
     /**
@@ -110,7 +112,7 @@ class Studioforty9_Recaptcha_Helper_Data extends Mage_Core_Helper_Abstract
     {
         $routes = array_filter(explode(',', Mage::getStoreConfig(self::MODULE_KEY_ROUTES)));
         array_map('strtolower', $routes);
-        
+
         return $routes;
     }
 
@@ -144,10 +146,10 @@ class Studioforty9_Recaptcha_Helper_Data extends Mage_Core_Helper_Abstract
         if (! $this->isModuleActive() || ! $this->isEnabled()) {
             return false;
         }
-        
+
         return $this->isEnabledRoute($route);
     }
-		
+
     /**
      * Is the module active.
      *
@@ -159,5 +161,15 @@ class Studioforty9_Recaptcha_Helper_Data extends Mage_Core_Helper_Abstract
         return Mage::getConfig()
             ->getModuleConfig("Studioforty9_Recaptcha")
             ->is('active', 'true');
+    }
+
+    public function getVersion(): string
+    {
+        return (string)Mage::getStoreConfig(self::MODULE_VERSION);
+    }
+
+    public function getScoreThreshold(): float
+    {
+        return (float)Mage::getStoreConfig(self::MODULE_SCORE_THRESHOLD);
     }
 }

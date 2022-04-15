@@ -18,6 +18,7 @@
     }
   ],
   "require": {
-    "magento-hackathon/magento-composer-installer": "*"
+    "magento-hackathon/magento-composer-installer": "*",
+    "google/recaptcha": "^1.2"
   }
 }

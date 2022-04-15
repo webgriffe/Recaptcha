@@ -15,7 +15,7 @@
 <config>
     <modules>
         <Studioforty9_Recaptcha>
-            <version>1.5.7</version>
+            <version>1.5.10</version>
         </Studioforty9_Recaptcha>
     </modules>
     <global>
@@ -144,9 +144,11 @@
                 <enabled_reviews>0</enabled_reviews>
                 <enabled_sendfriend>0</enabled_sendfriend>
                 <enabled_customer_registration>0</enabled_customer_registration>
+                <version>2</version>
                 <site_key></site_key>
                 <secret_key></secret_key>
                 <theme>light</theme>
+                <score_threshold>0.5</score_threshold>
                 <enabled_routes><![CDATA[]]></enabled_routes>
             </recaptcha>
         </google>
