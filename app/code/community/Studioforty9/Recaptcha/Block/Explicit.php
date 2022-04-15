@@ -144,6 +144,8 @@ class Studioforty9_Recaptcha_Block_Explicit extends Mage_Core_Block_Template
 
     /**
      * Get the reCAPTACHA javascript code.
+     * This is only for reCaptcha V2. The method name does not specify it for BC reasons.
+     * For reCaptcha V3 the getRecaptchaV3ScriptUrl() method should be used.
      *
      * @return string
      */
@@ -153,11 +155,20 @@ class Studioforty9_Recaptcha_Block_Explicit extends Mage_Core_Block_Template
             return '';
         }
 
-        if ($this->_getHelper()->getVersion() === 3) {
-            return $this->getRecaptchaScriptV3();
-        }
-
         return $this->getRecaptchaScriptV2($id);
+    }
+
+    public function getRecaptchaV3ScriptUrl(): string
+    {
+        $siteKey = $this->getSiteKey();
+        $id = $this->getRecaptchaId();
+
+        $query = [
+            'render' => $siteKey,
+            'onload' => sprintf('recaptchaOnloadCallback_%s', $id)
+        ];
+
+        return sprintf('https://www.google.com/recaptcha/api.js?%s', http_build_query($query));
     }
 
     /**
@@ -221,15 +232,5 @@ class Studioforty9_Recaptcha_Block_Explicit extends Mage_Core_Block_Template
             '<script src="https://www.google.com/recaptcha/api.js?%s" async defer></script>',
             http_build_query($query)
         );
-    }
-
-    private function getRecaptchaScriptV3(): string
-    {
-        $siteKey = $this->getSiteKey();
-        $id = $this->getRecaptchaId();
-
-        return <<<HTML
-<script async src="https://www.google.com/recaptcha/api.js?render=$siteKey&onload=recaptchaOnloadCallback_$id"></script>
-HTML;
     }
 }
