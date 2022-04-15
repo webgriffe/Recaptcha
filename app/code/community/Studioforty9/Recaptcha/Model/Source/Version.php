@@ -9,11 +9,15 @@ final class Studioforty9_Recaptcha_Model_Source_Version
      *
      * @return array
      */
-    public function toOptionArray()
+    public function toOptionArray(): array
     {
-        return array(
-            array('value' => 2, 'label'=>Mage::helper('studioforty9_recaptcha')->__('v2')),
-            array('value' => 3, 'label'=>Mage::helper('studioforty9_recaptcha')->__('v3')),
+        $array = $this->toArray();
+        return array_map(
+            static function (string $value, string $label) {
+                return ['value' => $value, 'label' => $label];
+            },
+            array_keys($array),
+            $array
         );
     }
 
@@ -22,11 +26,11 @@ final class Studioforty9_Recaptcha_Model_Source_Version
      *
      * @return array
      */
-    public function toArray()
+    public function toArray(): array
     {
-        return array(
-            2 => Mage::helper('studioforty9_recaptcha')->__('v2'),
-            3 => Mage::helper('studioforty9_recaptcha')->__('v3'),
-        );
+        return [
+            '2' => Mage::helper('studioforty9_recaptcha')->__('v2'),
+            '3' => Mage::helper('studioforty9_recaptcha')->__('v3'),
+        ];
     }
 }
