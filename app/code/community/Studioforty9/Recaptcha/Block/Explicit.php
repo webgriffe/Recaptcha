@@ -183,7 +183,7 @@ class Studioforty9_Recaptcha_Block_Explicit extends Mage_Core_Block_Template
 
     public function getTemplate()
     {
-        if ($this->_getHelper()->getVersion() === 3) {
+        if ($this->_getHelper()->getVersion() === '3') {
             return 'studioforty9/recaptcha/v3.phtml';
         }
 

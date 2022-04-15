@@ -163,9 +163,9 @@ class Studioforty9_Recaptcha_Helper_Data extends Mage_Core_Helper_Abstract
             ->is('active', 'true');
     }
 
-    public function getVersion(): int
+    public function getVersion(): string
     {
-        return (int)Mage::getStoreConfig(self::MODULE_VERSION);
+        return (string)Mage::getStoreConfig(self::MODULE_VERSION);
     }
 
     public function getScoreThreshold(): float

@@ -39,7 +39,7 @@ class Studioforty9_Recaptcha_Helper_Request extends Mage_Core_Helper_Abstract
         $gRecaptchaResponse = $this->_getRequest()->getPost(self::REQUEST_RESPONSE);
 
         $recaptcha = new ReCaptcha($secret);
-        if ($version === 3) {
+        if ($version === '3') {
             $recaptcha->setScoreThreshold($scoreThreshold);
         }
         $response = $recaptcha->verify($gRecaptchaResponse, $remoteIp);
