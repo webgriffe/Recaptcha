@@ -22,20 +22,31 @@
         var form = element.form;
 
         // recaptcha callback for this form
+        window['recaptchaOnloadCallback_<?= $id ?>_done'] = false;
         window['recaptchaOnloadCallback_<?= $id ?>'] = function() {
-            requestAnimationFrame(function () {
-                Event.observe(form, 'submit', function (e) {
-                    if (e.stopped) {
-                        return;
-                    }
-
-                    e.preventDefault();
-                    grecaptcha.execute('<?= $this->getSiteKey() ?>', {action: 'submit'}).then(function (token) {
+            addEventListener('submit', function(e) {
+                alert('recaptcha');
+                var element = document.querySelector('#el-<?= $id ?>');
+                var form = element.form;
+                if (e.target !== form) {
+                    return
+                }
+                if (!window['recaptchaOnloadCallback_<?= $id ?>_done']) {
+                    e.preventDefault(); // stop form submit
+                    e.stopPropagation(); // stop also events
+                    grecaptcha.execute('<?= $this->getSiteKey() ?>', { action: 'submit' }).then(function (token) {
+                        alert('recaptcha promise');
                         element.value = token;
-                        form.submit();
+                        window['recaptchaOnloadCallback_<?= $id ?>_done'] = true;
+                        if (e.submitter) {
+                            e.submitter.click(); // trigger also events
+                        } else {
+                            form.submit();
+                        }
+                        window['recaptchaOnloadCallback_<?= $id ?>_done'] = false;
                     });
-                });
-            });
+                }
+            }, true) // execute before other submit listeners
         };
 
         // recaptcha load for this form
