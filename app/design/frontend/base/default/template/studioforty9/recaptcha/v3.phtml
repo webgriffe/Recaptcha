@@ -25,7 +25,6 @@
         window['recaptchaOnloadCallback_<?= $id ?>_done'] = false;
         window['recaptchaOnloadCallback_<?= $id ?>'] = function() {
             addEventListener('submit', function(e) {
-                alert('recaptcha');
                 var element = document.querySelector('#el-<?= $id ?>');
                 var form = element.form;
                 if (e.target !== form) {
@@ -35,7 +34,6 @@
                     e.preventDefault(); // stop form submit
                     e.stopPropagation(); // stop also events
                     grecaptcha.execute('<?= $this->getSiteKey() ?>', { action: 'submit' }).then(function (token) {
-                        alert('recaptcha promise');
                         element.value = token;
                         window['recaptchaOnloadCallback_<?= $id ?>_done'] = true;
                         if (e.submitter) {
