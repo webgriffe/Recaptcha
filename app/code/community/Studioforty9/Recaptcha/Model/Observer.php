@@ -43,28 +43,32 @@ class Studioforty9_Recaptcha_Model_Observer
         if ($response->isSuccess()) return;
         
         /** reCAPTCHA Verification Failed **/
-        
-        Mage::getSingleton('core/session')->addError(
-            Mage::helper('studioforty9_recaptcha')->__(
-                'There was an error with the recaptcha code, please try again.'
-            )
+
+        $errorMessage = Mage::helper('studioforty9_recaptcha')->__(
+            'There was an error with the recaptcha code, please try again.'
         );
-        
-        $flag = Mage_Core_Controller_Varien_Action::FLAG_NO_DISPATCH;
-        $redirectUrl = Mage::helper('studioforty9_recaptcha/redirect')->getUrl();
 
         $controller->getRequest()->setDispatched(true);
-        $controller->setFlag('', $flag, true);
-        $controller->getResponse()->setRedirect($redirectUrl);
-        
+        $controller->setFlag('', Mage_Core_Controller_Varien_Action::FLAG_NO_DISPATCH, true);
+
+        if ($controller->getRequest()->isAjax()) {
+            $controller->getResponse()->setHttpResponseCode(400);
+            $controller->getResponse()->setBody($errorMessage);
+        } else {
+            Mage::getSingleton('core/session')->addError($errorMessage);
+
+            $redirectUrl = Mage::helper('studioforty9_recaptcha/redirect')->getUrl();
+            $controller->getResponse()->setRedirect($redirectUrl);
+        }
+
         $payload = array(
             'controller_action'  => $controller,
             'recaptcha_response' => $response
         );
-        
+
         Mage::dispatchEvent('studioforty9_recaptcha_failed', $payload);
         Mage::dispatchEvent('studioforty9_recaptcha_failed_' . $route, $payload);
-				
+
         return $controller;
     }
     
