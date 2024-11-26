@@ -16,20 +16,20 @@
 
     <contacts_index_index>
         <reference name="contactForm">
-            <block type="studioforty9_recaptcha/explicit" name="studioforty9.recaptcha.explicit" template="studioforty9/recaptcha/explicit.phtml"/>
+            <block type="studioforty9_recaptcha/explicit" name="studioforty9.recaptcha.explicit"/>
         </reference>
     </contacts_index_index>
 
     <review_product_list>
         <reference name="product.review.form">
-            <block type="studioforty9_recaptcha/explicit" name="studioforty9.recaptcha.explicit" template="studioforty9/recaptcha/explicit.phtml"/>
+            <block type="studioforty9_recaptcha/explicit" name="studioforty9.recaptcha.explicit"/>
         </reference>
     </review_product_list>
 
     <customer_account_login>
         <reference name="customer_form_login">
             <block type="core/text_list" name="form.additional.info">
-                <block type="studioforty9_recaptcha/explicit" name="studioforty9.recaptcha.explicit" template="studioforty9/recaptcha/explicit.phtml"/>
+                <block type="studioforty9_recaptcha/explicit" name="studioforty9.recaptcha.explicit"/>
             </block>
         </reference>
     </customer_account_login>
@@ -37,7 +37,7 @@
     <customer_account_forgotpassword>
         <reference name="forgotPassword">
             <block type="core/text_list" name="form.additional.info">
-                <block type="studioforty9_recaptcha/explicit" name="studioforty9.recaptcha.explicit" template="studioforty9/recaptcha/explicit.phtml"/>
+                <block type="studioforty9_recaptcha/explicit" name="studioforty9.recaptcha.explicit"/>
             </block>
         </reference>
     </customer_account_forgotpassword>
@@ -45,14 +45,14 @@
     <customer_account_create>
         <reference name="customer_form_register">
             <block type="core/text_list" name="form.additional.info">
-                <block type="studioforty9_recaptcha/explicit" name="studioforty9.recaptcha.explicit" template="studioforty9/recaptcha/explicit.phtml"/>
+                <block type="studioforty9_recaptcha/explicit" name="studioforty9.recaptcha.explicit"/>
             </block>
         </reference>
     </customer_account_create>
 
     <sendfriend_product_send>
         <reference name="sendfriend.send">
-            <block type="studioforty9_recaptcha/explicit" name="studioforty9.recaptcha.explicit" template="studioforty9/recaptcha/explicit.phtml"/>
+            <block type="studioforty9_recaptcha/explicit" name="studioforty9.recaptcha.explicit"/>
         </reference>
     </sendfriend_product_send>
 
